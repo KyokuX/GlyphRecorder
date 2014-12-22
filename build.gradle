@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+
+    dependencies {
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'crashlytics'
+
+repositories {
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
+android {
+    compileSdkVersion 10
+    buildToolsVersion "21.1.1"
+    defaultConfig {
+        applicationId "com.x.android.app.touchtracker"
+        minSdkVersion 10
+        targetSdkVersion 10
+        versionCode 3
+        versionName "1.0.2"
+    }
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            runProguard false
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.google.android.gms:play-services:6.1.71'
+    compile 'com.crashlytics.android:crashlytics:1.+'
+}
