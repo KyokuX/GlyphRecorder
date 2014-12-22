@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/layout_glygh_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </ScrollView>
+
+    <com.x.android.app.glyphrecorder.component.TouchTrackerView
+        android:id="@+id/view_touch_tracker"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/layout_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal" >
+
+        <com.x.android.app.glyphrecorder.component.FontButton
+            style="@style/ActionButton.Neutral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_translucent"
+            android:text="@string/txt_switch" />
+
+        <com.x.android.app.glyphrecorder.component.FontButton
+            style="@style/ActionButton.Neutral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_close"
+            android:text="@string/txt_close" />
+
+        <com.x.android.app.glyphrecorder.component.FontButton
+            style="@style/ActionButton.Neutral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_exit"
+            android:text="@string/txt_exit" />
+    </LinearLayout>
+</LinearLayout>
