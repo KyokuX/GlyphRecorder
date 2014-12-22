@@ -21,8 +21,8 @@ android {
         applicationId "com.x.android.app.touchtracker"
         minSdkVersion 10
         targetSdkVersion 10
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
     }
     buildTypes {
         release {

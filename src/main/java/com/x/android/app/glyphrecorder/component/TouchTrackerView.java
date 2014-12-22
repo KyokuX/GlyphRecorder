@@ -36,7 +36,7 @@ public class TouchTrackerView extends View {
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setAntiAlias(true);
-        mPaint.setStrokeWidth(20);
+        mPaint.setStrokeWidth(10);// TODO Move this to settings.
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
 
