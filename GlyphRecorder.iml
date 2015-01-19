@@ -86,8 +86,8 @@
     <orderEntry type="library" exported="" name="crashlytics-1.1.13" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.2" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.2" level="project" />
+    <orderEntry type="library" exported="" name="xlib_release2015011709-" level="project" />
     <orderEntry type="library" exported="" name="play-services-6.1.71" level="project" />
-    <orderEntry type="module" module-name="XLibrary" exported="" />
   </component>
 </module>
 
