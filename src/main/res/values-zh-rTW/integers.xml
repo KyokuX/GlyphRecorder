@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <dimen name="text_size_normal">21sp</dimen>
+    <integer name="scale_rate_text_size">13</integer>
 </resources>

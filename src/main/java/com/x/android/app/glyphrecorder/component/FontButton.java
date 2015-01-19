@@ -6,16 +6,14 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.Button;
-import android.widget.TextView;
 
+import com.x.android.app.glyphrecorder.R;
 import com.xi47.common.android.util.DeviceUtil;
 
 /**
  * Created by X on 14/11/29.
  */
 public class FontButton extends Button {
-
-    private static final int SCALE_RATE_TEXT_SIZE = 13;
 
     public FontButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -24,6 +22,7 @@ public class FontButton extends Button {
         DeviceUtil.getInstance().init(context);
         Point screenSize = DeviceUtil.getInstance().getDisPlayPoint();
         int miniSize = screenSize.x > screenSize.y ? screenSize.y : screenSize.x;
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, miniSize / SCALE_RATE_TEXT_SIZE);
+        int scaleRate = context.getResources().getInteger(R.integer.scale_rate_text_size);
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, miniSize / scaleRate);
     }
 }

@@ -1,7 +1,6 @@
 <resources>
 
     <style name="ActionButton">
-        <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:textColor">#ff2deff9</item>
     </style>
 

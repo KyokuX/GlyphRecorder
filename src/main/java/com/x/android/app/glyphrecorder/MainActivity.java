@@ -3,6 +3,7 @@ package com.x.android.app.glyphrecorder;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -12,11 +13,12 @@ import com.google.android.gms.analytics.Tracker;
 /**
  * Created by KyokuX on 14/11/15.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Crashlytics.start(this);
 
         Tracker tracker = ((AnalyticsApplication) getApplication()).getTracker();
