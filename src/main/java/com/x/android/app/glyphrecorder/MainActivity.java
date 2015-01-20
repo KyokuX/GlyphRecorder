@@ -15,7 +15,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.x.android.app.glyphrecorder.fragment.SettingsFragment;
 import com.x.android.app.glyphrecorder.util.Constants;
 import com.xi47.common.android.content.PreferencesUtil;
-import com.xi47.common.android.util.LogUtil;
 
 /**
  * Created by KyokuX on 14/11/15.
@@ -66,7 +65,6 @@ public class MainActivity extends FragmentActivity {
 
         findViewById(R.id.btn_start).setOnClickListener(mOnClickListener);
 
-        LogUtil.d("isSettingsShown: " + isSettingsShown);
         if (isSettingsShown) {
             startTrigger();
         } else {

@@ -9,10 +9,12 @@ import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -31,9 +33,6 @@ import com.xi47.common.android.content.PreferencesUtil;
 public class FloatWindowService extends Service {
 
     private static final int MAX_TRACK = 5;
-
-    private int mTriggerX = -1;
-    private int mTriggerY = -1;
 
     private View mGlyphView = null;
     private View mTriggerView = null;
@@ -75,15 +74,6 @@ public class FloatWindowService extends Service {
                     showTrigger();
                     break;
 
-                case R.id.btn_trigger:
-                    tracker.setScreenName("trigger");
-                    tracker.send(new HitBuilders.AppViewBuilder().build());
-
-                    hideTrigger();
-                    showGlyph(false);
-                    showButtons();
-                    break;
-
                 case R.id.btn_exit:
                     tracker.setScreenName("exit");
                     tracker.send(new HitBuilders.AppViewBuilder().build());
@@ -109,32 +99,68 @@ public class FloatWindowService extends Service {
     };
 
     private View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
+
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    break;
-
-                case MotionEvent.ACTION_MOVE:
-                    mTriggerX = (int)(event.getX());
-                    mTriggerY = (int)(event.getY());
-                    updateTriggerPosition();
-                    break;
-
-                case MotionEvent.ACTION_UP:
-                    break;
-
-                default:
-                    break;
-            }
-            return false;
+            return mGestureDetector.onTouchEvent(event);
         }
     };
+
+    private GestureDetector mGestureDetector = null;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (mManager == null) {
             mManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+
+            mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+
+                float mLastX = -1f;
+                float mLastY = -1f;
+
+                @Override
+                public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                    updateTriggerPosition((int)e2.getRawX(), (int)e2.getRawY());
+                    return super.onScroll(e1, e2, distanceX, distanceY);
+                }
+
+                @Override
+                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                    float xDistance = e2.getX() - e1.getX();
+                    float yDistance = e2.getY() - e1.getY();
+                    WindowManager.LayoutParams params = createTriggerParams();
+                    if (Math.abs(yDistance) > Math.abs(xDistance)) {
+                        if (Math.abs(velocityY) > ViewConfiguration.get(FloatWindowService.this).getScaledMaximumFlingVelocity() / 4) {
+                            updateTriggerPosition(params.x, yDistance > 0 ? getScreenSize().heightPixels : 0);
+                        }
+                    } else {
+                        if (Math.abs(velocityX) > ViewConfiguration.get(FloatWindowService.this).getScaledMaximumFlingVelocity() / 4) {
+                            updateTriggerPosition(xDistance > 0 ? getScreenSize().widthPixels : 0, params.y);
+                        }
+                    }
+                    return super.onFling(e1, e2, velocityX, velocityY);
+                }
+
+                @Override
+                public boolean onSingleTapConfirmed(MotionEvent e) {
+                    Tracker tracker = ((AnalyticsApplication) getApplication()).getTracker();
+                    tracker.setScreenName("trigger");
+                    tracker.send(new HitBuilders.AppViewBuilder().build());
+
+                    hideTrigger();
+                    showGlyph(false);
+                    showButtons();
+                    return super.onSingleTapConfirmed(e);
+                }
+
+                @Override
+                public boolean onDown(MotionEvent e) {
+                    mLastX = e.getX();
+                    mLastY = e.getY();
+                    return super.onDown(e);
+                }
+            });
+
             showTrigger();
         }
         return START_STICKY;
@@ -171,10 +197,12 @@ public class FloatWindowService extends Service {
         }
     }
 
-    private void updateTriggerPosition() {
-        WindowManager.LayoutParams params = getTriggerParams();
-        params.x = mTriggerX;
-        params.y = mTriggerY;
+    private void updateTriggerPosition(int x, int y) {
+        WindowManager.LayoutParams params = createTriggerParams();
+        params.x = x;
+        params.y = y;
+        PreferencesUtil.getInstance().put(Constants.PREFERENCE_NAME, Constants.PREFERENCE_TRIGGER_X, x);
+        PreferencesUtil.getInstance().put(Constants.PREFERENCE_NAME, Constants.PREFERENCE_TRIGGER_Y, y);
         mManager.updateViewLayout(mTriggerView, params);
     }
 
@@ -194,19 +222,10 @@ public class FloatWindowService extends Service {
     private void showTrigger() {
         if (mTriggerView == null) {
             mTriggerView = View.inflate(this, R.layout.view_trigger, null);
-            mTriggerView.setOnClickListener(mOnClickListener);
-            // TODO
-//            mTriggerView.setOnTouchListener(mOnTouchListener);
+            mTriggerView.setOnTouchListener(mOnTouchListener);
         }
         hideTrigger();
-        WindowManager.LayoutParams params = getTriggerParams();
-        if (mTriggerX < 0 || mTriggerY < 0) {
-            mTriggerX = 0;
-            mTriggerY = getScreenSize().heightPixels / 2;
-        }
-        params.x = mTriggerX;
-        params.y = mTriggerY;
-        mManager.addView(mTriggerView, params);
+        mManager.addView(mTriggerView, createTriggerParams());
     }
 
     private void hideTrigger() {
@@ -249,11 +268,13 @@ public class FloatWindowService extends Service {
         mManager.removeView(mGlyphView);
     }
 
-    private WindowManager.LayoutParams getTriggerParams() {
-        WindowManager.LayoutParams params = getParams(WindowManager.LayoutParams.TYPE_PHONE);
+    private WindowManager.LayoutParams createTriggerParams() {
+        WindowManager.LayoutParams params = createParams(WindowManager.LayoutParams.TYPE_PHONE);
         params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | params.flags;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.x = PreferencesUtil.getInstance().get(Constants.PREFERENCE_NAME, Constants.PREFERENCE_TRIGGER_X, 0);
+        params.y = PreferencesUtil.getInstance().get(Constants.PREFERENCE_NAME, Constants.PREFERENCE_TRIGGER_Y, getScreenSize().heightPixels / 2);
         return params;
     }
 
@@ -264,13 +285,13 @@ public class FloatWindowService extends Service {
     }
 
     private WindowManager.LayoutParams getTrackerViewParam(int type) {
-        WindowManager.LayoutParams params = getParams(type);
+        WindowManager.LayoutParams params = createParams(type);
         params.y = getScreenSize().heightPixels * 1 / 4;
         params.height = getScreenSize().heightPixels * 3 / 4;
         return params;
     }
 
-    private WindowManager.LayoutParams getParams(int type) {
+    private WindowManager.LayoutParams createParams(int type) {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         params.type = type;
         params.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
