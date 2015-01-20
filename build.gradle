@@ -18,14 +18,14 @@ repositories {
 }
 
 android {
-    compileSdkVersion 10
+    compileSdkVersion 15
     buildToolsVersion "21.1.1"
     defaultConfig {
         applicationId "com.x.android.app.touchtracker"
-        minSdkVersion 10
-        targetSdkVersion 10
+        minSdkVersion 15
+        targetSdkVersion 15
         versionCode 4
-        versionName "1.0.6"
+        versionName "1.0.8"
     }
     buildTypes {
         release {
@@ -46,4 +46,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.1.71'
     compile 'com.crashlytics.android:crashlytics:1.+'
     compile 'com.xi47.common:xlib_release2015011709@aar'
+    compile 'yuku.ambilwarna:ambilwarna_color_picker@aar'
 }

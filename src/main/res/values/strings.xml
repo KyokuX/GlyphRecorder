@@ -1,6 +1,18 @@
 <resources>
-    <string name="app_name">GlyphRecorder</string>
-    <string name="txt_switch">Translucent</string>
-    <string name="txt_close">Clear+Close</string>
-    <string name="txt_exit">Exit</string>
+    <string name="app_name">"GlyphRecorder"</string>
+
+    <!-- Action Buttons -->
+    <string name="txt_switch">"Translucent"</string>
+    <string name="txt_close">"Clear+Close"</string>
+    <string name="txt_exit">"Exit"</string>
+    <string name="btn_start">"Start"</string>
+    <string name="btn_settings">"Settings"</string>
+
+    <!-- Settings -->
+    <string name="preferences_color">"Color Settings"</string>
+    <string name="tip_line_color_1st">"Pick the first line's color"</string>
+    <string name="tip_line_color_2nd">"Pick the second line's color"</string>
+    <string name="tip_line_color_3rd">"Pick the third line's color"</string>
+    <string name="tip_line_color_4th">"Pick the fourth line's color"</string>
+    <string name="tip_line_color_5th">"Pick the fifth line's color"</string>
 </resources>

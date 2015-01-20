@@ -1,6 +1,18 @@
 <resources>
-    <string name="app_name">图形骇客</string>
+    <string name="app_name">"图形骇客"</string>
+
+    <!-- Action Buttons -->
     <string name="txt_switch">"穿透"</string>
     <string name="txt_close">"清空并关闭"</string>
     <string name="txt_exit">"退出"</string>
+    <string name="btn_start">"启动"</string>
+    <string name="btn_settings">"设置"</string>
+
+    <!-- Settings -->
+    <string name="preferences_color">"颜色设定"</string>
+    <string name="tip_line_color_1st">"选择第一条线的颜色"</string>
+    <string name="tip_line_color_2nd">"选择第二条线的颜色"</string>
+    <string name="tip_line_color_3rd">"选择第三条线的颜色"</string>
+    <string name="tip_line_color_4th">"选择第四条线的颜色"</string>
+    <string name="tip_line_color_5th">"选择第五条线的颜色"</string>
 </resources>

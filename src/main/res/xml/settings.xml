@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="@string/preferences_color">
+
+        <yuku.ambilwarna.widget.AmbilWarnaPreference
+            android:key="color_line_1st"
+            android:defaultValue="0xFFFF0000"
+            app:supportsAlpha="true"
+            android:title="@string/tip_line_color_1st" />
+
+        <yuku.ambilwarna.widget.AmbilWarnaPreference
+            android:key="color_line_2nd"
+            android:defaultValue="0xFF00FF00"
+            app:supportsAlpha="true"
+            android:title="@string/tip_line_color_2nd" />
+
+        <yuku.ambilwarna.widget.AmbilWarnaPreference
+            android:key="color_line_3rd"
+            android:defaultValue="0xFF0000FF"
+            app:supportsAlpha="true"
+            android:title="@string/tip_line_color_3rd" />
+
+        <yuku.ambilwarna.widget.AmbilWarnaPreference
+            android:key="color_line_4th"
+            android:defaultValue="0xFFFFFF00"
+            app:supportsAlpha="true"
+            android:title="@string/tip_line_color_4th" />
+
+        <yuku.ambilwarna.widget.AmbilWarnaPreference
+            android:key="color_line_5th"
+            android:defaultValue="0xFFFF00FF"
+            app:supportsAlpha="true"
+            android:title="@string/tip_line_color_5th" />
+    </PreferenceCategory>
+</PreferenceScreen>

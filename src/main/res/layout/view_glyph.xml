@@ -4,16 +4,26 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <com.x.android.app.glyphrecorder.component.FontButton
+            style="@style/ActionButton.Neutral"
+            android:id="@+id/btn_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_settings" />
 
         <LinearLayout
             android:id="@+id/layout_glygh_container"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
-    </ScrollView>
+    </LinearLayout>
 
     <com.x.android.app.glyphrecorder.component.TouchTrackerView
         android:id="@+id/view_touch_tracker"

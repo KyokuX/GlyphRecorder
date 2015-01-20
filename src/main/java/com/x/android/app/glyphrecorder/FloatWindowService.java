@@ -3,16 +3,16 @@ package com.x.android.app.glyphrecorder;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -22,6 +22,8 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.x.android.app.glyphrecorder.bean.Color;
 import com.x.android.app.glyphrecorder.component.TouchTrackerView;
+import com.x.android.app.glyphrecorder.util.Constants;
+import com.xi47.common.android.content.PreferencesUtil;
 
 /**
  * Created by KyokuX on 14/11/15.
@@ -29,7 +31,6 @@ import com.x.android.app.glyphrecorder.component.TouchTrackerView;
 public class FloatWindowService extends Service {
 
     private static final int MAX_TRACK = 5;
-    private static final int[] COLOR_RANGE = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.PINK};
 
     private int mTriggerX = -1;
     private int mTriggerY = -1;
@@ -39,6 +40,7 @@ public class FloatWindowService extends Service {
     private ViewGroup mMakerContainerView = null;
     private WindowManager mManager = null;
     private View mActionBar = null;
+    private View mSettingView = null;
 
     private TouchTrackerView mTrackerView = null;
     private TouchTrackerView.OnTrackerListener mListener = new TouchTrackerView.OnTrackerListener() {
@@ -60,7 +62,7 @@ public class FloatWindowService extends Service {
 
                     showGlyph(true);
                     showTrigger();
-                    hideActionBar();
+                    hideButtons();
                     break;
 
                 case R.id.btn_close:
@@ -79,16 +81,25 @@ public class FloatWindowService extends Service {
 
                     hideTrigger();
                     showGlyph(false);
-                    showActionBar();
+                    showButtons();
                     break;
 
                 case R.id.btn_exit:
                     tracker.setScreenName("exit");
                     tracker.send(new HitBuilders.AppViewBuilder().build());
 
-                    hideGlyph();
-                    hideTrigger();
-                    stopSelf();
+                    exit();
+                    break;
+
+                case R.id.btn_settings:
+                    tracker.setScreenName("setting");
+                    tracker.send(new HitBuilders.AppViewBuilder().build());
+
+                    exit();
+                    PreferencesUtil.getInstance().put(Constants.PREFERENCE_NAME, Constants.PREFERENCE_SETTINGS_SHOWN, false);
+                    Intent intent = new Intent(FloatWindowService.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     break;
 
                 default:
@@ -102,18 +113,15 @@ public class FloatWindowService extends Service {
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    Log.d("TCX", "down: " + event.getX() + ", " + event.getY());
                     break;
 
                 case MotionEvent.ACTION_MOVE:
                     mTriggerX = (int)(event.getX());
                     mTriggerY = (int)(event.getY());
-                    Log.d("TCX", "x: " + mTriggerX + " y: " + mTriggerY + " count:" + event.getPointerCount());
                     updateTriggerPosition();
                     break;
 
                 case MotionEvent.ACTION_UP:
-                    Log.d("TCX", "up: " + event.getX() + ", " + event.getY());
                     break;
 
                 default:
@@ -143,15 +151,23 @@ public class FloatWindowService extends Service {
         super.onDestroy();
     }
 
-    private void showActionBar() {
+    private void exit() {
+        hideGlyph();
+        hideTrigger();
+        stopSelf();
+    }
+
+    private void showButtons() {
         if (mActionBar.getVisibility() != View.VISIBLE) {
             mActionBar.setVisibility(View.VISIBLE);
+            mSettingView.setVisibility(View.VISIBLE);
         }
     }
 
-    private void hideActionBar() {
+    private void hideButtons() {
         if (mActionBar.getVisibility() != View.INVISIBLE) {
             mActionBar.setVisibility(View.INVISIBLE);
+            mSettingView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -168,8 +184,8 @@ public class FloatWindowService extends Service {
 
     private void addTrackerMaker(Path path, Color color) {
         View view = new ImageView(this);
-        view.setBackgroundColor(color.rgb());
-        int size = getScreenSize().widthPixels / 11;
+        view.setBackgroundColor(color.argb());
+        int size = mMakerContainerView.getWidth() / 11;
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
         params.leftMargin = size;
         mMakerContainerView.addView(view, params);
@@ -206,11 +222,16 @@ public class FloatWindowService extends Service {
             mGlyphView.findViewById(R.id.btn_translucent).setOnClickListener(mOnClickListener);
             mGlyphView.findViewById(R.id.btn_close).setOnClickListener(mOnClickListener);
             mGlyphView.findViewById(R.id.btn_exit).setOnClickListener(mOnClickListener);
+            mSettingView = mGlyphView.findViewById(R.id.btn_settings);
+            mSettingView.setOnClickListener(mOnClickListener);
 
             mTrackerView = (TouchTrackerView) mGlyphView.findViewById(R.id.view_touch_tracker);
             mTrackerView.setOnTrackListener(mListener);
             mTrackerView.setMaxTrack(MAX_TRACK);
-            mTrackerView.setColorRange(COLOR_RANGE);
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            int[] colors = new int[]{preferences.getInt("color_line_1st", Color.randomWithoutAlpha().rgb()), preferences.getInt("color_line_2nd", Color.randomWithoutAlpha().rgb()), preferences.getInt("color_line_3rd", Color.randomWithoutAlpha().rgb()), preferences.getInt("color_line_4th", Color.randomWithoutAlpha().rgb()), preferences.getInt("color_line_5th", Color.randomWithoutAlpha().rgb())};
+            mTrackerView.setColorRange(colors);
 
             mMakerContainerView = (ViewGroup) mGlyphView.findViewById(R.id.layout_glygh_container);
             mMakerContainerView.setMinimumHeight(getScreenSize().widthPixels / 11);
@@ -257,7 +278,7 @@ public class FloatWindowService extends Service {
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
         params.format = PixelFormat.TRANSLUCENT;
-        params.gravity = Gravity.LEFT | Gravity.TOP; // TODO change to Gravity.START.
+        params.gravity = Gravity.START | Gravity.TOP;
         return params;
     }
 }

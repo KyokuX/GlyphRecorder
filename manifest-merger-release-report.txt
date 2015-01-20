@@ -78,6 +78,7 @@ MERGED from com.android.support:support-v4:21.0.2:15:5
 MERGED from com.google.android.gms:play-services:6.1.71:15:5
 MERGED from com.android.support:support-v4:21.0.2:15:5
 MERGED from com.xi47.common:xlib_release2015011709::8:5
+MERGED from yuku.ambilwarna:ambilwarna_color_picker::8:5
 	android:targetSdkVersion
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0

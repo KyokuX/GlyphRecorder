@@ -5,7 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Xfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,6 +42,8 @@ public class TouchTrackerView extends View {
         mPaint.setStrokeWidth(10);// TODO Move this to settings.
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setDither(true);
+        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
 
         mUsedColors = new ArrayList<Color>();
     }
@@ -72,7 +77,7 @@ public class TouchTrackerView extends View {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_OUTSIDE:
             case MotionEvent.ACTION_UP:
-                mTrackCount ++;
+                mTrackCount++;
                 if (mListener != null && mUsedColors != null && mUsedColors.size() > 0) {
                     mListener.onTrackEnd(mCurrentPath, mUsedColors.get(mUsedColors.size() - 1));
                 }
@@ -90,7 +95,7 @@ public class TouchTrackerView extends View {
         mColors = colors;
     }
 
-    public void setOnTrackListener (OnTrackerListener listener) {
+    public void setOnTrackListener(OnTrackerListener listener) {
         mListener = listener;
     }
 
@@ -114,7 +119,8 @@ public class TouchTrackerView extends View {
             return false;
         }
         int index = mTrackCount % mColors.length;
-        mPaint.setColor(mColors[index]);
+        Color color = new Color(mColors[index]);
+        mPaint.setARGB(color.getAlpha(), color.getRed(), color.getGreen(), color.getBlue());
         mUsedColors.add(new Color(mColors[index]));
         return true;
     }
