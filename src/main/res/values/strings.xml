@@ -3,7 +3,7 @@
 
     <!-- Action Buttons -->
     <string name="txt_switch">"Translucent"</string>
-    <string name="txt_close">"Clear+Close"</string>
+    <string name="txt_close">"Clear"</string>
     <string name="txt_exit">"Exit"</string>
     <string name="btn_start">"Start"</string>
     <string name="btn_settings">"Settings"</string>

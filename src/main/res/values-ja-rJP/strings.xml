@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">"ガフハく"</string>
+
+    <!-- Action Buttons -->
+    <string name="txt_switch">"透過"</string>
+    <string name="txt_close">"クリア"</string>
+    <string name="txt_exit">"閉める"</string>
+    <string name="btn_start">"スタート"</string>
+    <string name="btn_settings">"設定"</string>
+
+    <!-- Settings -->
+    <string name="preferences_color">"色設定"</string>
+    <string name="tip_line_color_1st">"一番の線の色を選択する"</string>
+    <string name="tip_line_color_2nd">"二番の線の色を選択する"</string>
+    <string name="tip_line_color_3rd">"三番の線の色を選択する"</string>
+    <string name="tip_line_color_4th">"四番の線の色を選択する"</string>
+    <string name="tip_line_color_5th">"五番の線の色を選択する"</string>
+</resources>

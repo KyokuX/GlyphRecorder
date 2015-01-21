@@ -3,7 +3,7 @@
 
     <!-- Action Buttons -->
     <string name="txt_switch">"穿透"</string>
-    <string name="txt_close">"清空并关闭"</string>
+    <string name="txt_close">"清空"</string>
     <string name="txt_exit">"退出"</string>
     <string name="btn_start">"启动"</string>
     <string name="btn_settings">"设置"</string>

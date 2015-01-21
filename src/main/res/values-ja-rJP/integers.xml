@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="scale_rate_text_size">17</integer>
+    <integer name="scale_rate_text_size">11</integer>
 </resources>
