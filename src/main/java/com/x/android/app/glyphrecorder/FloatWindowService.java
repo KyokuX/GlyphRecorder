@@ -51,6 +51,7 @@ public class FloatWindowService extends Service {
     };
 
     private OnClickListener mOnClickListener = new OnClickListener() {
+
         @Override
         public void onClick(View v) {
             Tracker tracker = ((AnalyticsApplication) getApplication()).getTracker();
@@ -184,9 +185,15 @@ public class FloatWindowService extends Service {
     }
 
     private void showButtons() {
-        if (mActionBar.getVisibility() != View.VISIBLE) {
-            mActionBar.setVisibility(View.VISIBLE);
-            mSettingView.setVisibility(View.VISIBLE);
+        // Avoid IllegalStateException on some devices.
+        // has already been added to the window manager.
+        try {
+            if (mActionBar.getVisibility() != View.VISIBLE) {
+                mActionBar.setVisibility(View.VISIBLE);
+                mSettingView.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
