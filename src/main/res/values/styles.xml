@@ -6,12 +6,6 @@
 
     <style name="ActionButton.Neutral" parent="@style/ActionButton">
         <item name="android:background">@drawable/default_btn_background</item>
-        <item name="android:layout_marginLeft">3dp</item>
-        <item name="android:layout_marginRight">3dp</item>
-        <item name="android:paddingTop">3dp</item>
-        <item name="android:paddingBottom">3dp</item>
-        <item name="android:paddingLeft">13dp</item>
-        <item name="android:paddingRight">13dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
