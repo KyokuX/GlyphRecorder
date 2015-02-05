@@ -21,11 +21,11 @@ android {
     compileSdkVersion 15
     buildToolsVersion "21.1.1"
     defaultConfig {
-        applicationId "com.x.android.app.touchtracker"
+        applicationId "com.x.android.app.glyphrecorder"
         minSdkVersion 15
         targetSdkVersion 15
-        versionCode 5
-        versionName "1.1.1"
+        versionCode 6
+        versionName "1.1.2"
     }
     buildTypes {
         release {
