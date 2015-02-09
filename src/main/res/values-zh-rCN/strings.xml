@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">"图形骇客"</string>
-
     <!-- Action Buttons -->
     <string name="txt_switch">"穿透"</string>
     <string name="txt_close">"清空"</string>

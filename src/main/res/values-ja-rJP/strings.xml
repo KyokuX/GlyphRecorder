@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">"ガフハく"</string>
-
     <!-- Action Buttons -->
     <string name="txt_switch">"透過"</string>
     <string name="txt_close">"クリア"</string>
